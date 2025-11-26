@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Filament\Pages;
-use Filament\Pages\Page;
-use Illuminate\Contracts\View\View;
-use Filament\Support\Enums\MaxWidth;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Traits\HasRoles;
+
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Filament\Pages\Page;
+use Filament\Support\Enums\MaxWidth;
+use Illuminate\Contracts\View\View;
 
 class PosPage extends Page
 {
@@ -22,14 +21,14 @@ class PosPage extends Page
 
 
     public function getMaxContentWidth(): MaxWidth
-{
-    return MaxWidth::Full;
-}
+    {
+        return MaxWidth::Full;
+    }
 
-public function getHeader(): ?View
-{
-    return view('filament.layouts.layout');
-}
-   
+    public function getHeader(): ?View
+    {
+        return view('filament.layouts.layout');
+    }
+
 
 }

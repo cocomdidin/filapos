@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Report;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
 use App\Filament\Resources\ReportResource\Pages;
+use App\Models\Report;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 
 class ReportResource extends Resource implements HasShieldPermissions
 {
@@ -43,30 +44,30 @@ class ReportResource extends Resource implements HasShieldPermissions
         return $form
             ->schema([
                 Forms\Components\Section::make('Setting Laporan')
-                ->schema([
-                    Forms\Components\ToggleButtons::make('report_type')
-                    ->options([
-                        'inflow' => 'Uang Masuk',
-                        'outflow' => 'Uang Keluar',
-                        'sales' => 'Penjualan'
-                    ])
-                    ->colors([
-                        'inflow' => 'success',
-                        'outflow' => 'danger',
-                        'sales' => 'info'
-                    ])
-                    // ->icons([
-                    //     'pemasukan' => 'heroicon-o-arrow-down-circle',
-                    //     'pengeluaran' => 'heroicon-o-arrow-up-circle',
-                    // ])
-                    ->default('inflow')
-                    ->grouped(),
-                    Forms\Components\DatePicker::make('start_date')
-                        ->label('Dari Tanggal')
-                        ->required(),
-                    Forms\Components\DatePicker::make('end_date')
-                        ->label('Sampai Tanggal')
-                        ->required(),
+                    ->schema([
+                        Forms\Components\ToggleButtons::make('report_type')
+                            ->options([
+                                'inflow' => 'Uang Masuk',
+                                'outflow' => 'Uang Keluar',
+                                'sales' => 'Penjualan'
+                            ])
+                            ->colors([
+                                'inflow' => 'success',
+                                'outflow' => 'danger',
+                                'sales' => 'info'
+                            ])
+                            // ->icons([
+                            //     'pemasukan' => 'heroicon-o-arrow-down-circle',
+                            //     'pengeluaran' => 'heroicon-o-arrow-up-circle',
+                            // ])
+                            ->default('inflow')
+                            ->grouped(),
+                        Forms\Components\DatePicker::make('start_date')
+                            ->label('Dari Tanggal')
+                            ->required(),
+                        Forms\Components\DatePicker::make('end_date')
+                            ->label('Sampai Tanggal')
+                            ->required(),
                     ]),
             ]);
     }
@@ -81,18 +82,18 @@ class ReportResource extends Resource implements HasShieldPermissions
                     ->searchable(),
                 Tables\Columns\TextColumn::make('report_type')
                     ->label('Tipe Laporan')
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'inflow' => 'Uang Masuk',
                         'outflow' => 'Uang Keluar',
                         'sales' => 'Penjualan',
                         default => 'Unknown',
                     })
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'inflow' => 'heroicon-o-arrow-down-circle',
                         'outflow' => 'heroicon-o-arrow-up-circle',
                         'sales' => 'heroicon-o-arrow-down-circle',
                     })
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'inflow' => 'success',
                         'outflow' => 'danger',
                         'sales' => 'info',
@@ -120,11 +121,11 @@ class ReportResource extends Resource implements HasShieldPermissions
             ])
             ->actions([
                 Tables\Actions\Action::make('download')
-                ->label('Download') // Label di tombol
-                ->icon('heroicon-m-arrow-down-tray') // Icon download dari Heroicons
-                ->color('primary') // Warna tombol (biru)
-                ->url(fn ($record) => asset('storage/' . $record->path_file))
-                ->openUrlInNewTab(true), // Membuka URL di tab baru,
+                    ->label('Download') // Label di tombol
+                    ->icon('heroicon-m-arrow-down-tray') // Icon download dari Heroicons
+                    ->color('primary') // Warna tombol (biru)
+                    ->url(fn($record) => asset('storage/' . $record->path_file))
+                    ->openUrlInNewTab(true), // Membuka URL di tab baru,
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
